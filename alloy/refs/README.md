@@ -1,6 +1,7 @@
 # Alloy
+
 ## Book
-- "Software Abtractions: Logic, Language, and Analysis"
+- ["Software Abtractions: Logic, Language, and Analysis"](https://alloytools.org/)
   
 ## Examples
 
