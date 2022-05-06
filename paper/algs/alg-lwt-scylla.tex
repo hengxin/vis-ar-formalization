@@ -1,0 +1,94 @@
+% alg-lwt-cassandra.tex
+
+\begin{algorithm*}
+    \algblockdefx[NAME]{Receive}{ENDR}%
+        [1][Unknown]{\textbf{When received} #1 \textbf{from proposer} $j$}%
+        {Ending}
+    \algblockdefx[NAME]{ReceiveQ}{ENDRQ}%
+        [1][Unknown]{\textbf{When received} #1 \textbf{from a quorum of acceptors} $Q$}%
+        {}
+    \algblockdefx[NAME]{ReceiveC}{ENDRC}%
+        [1][Unknown]{\textbf{When received} #1 \textbf{from client}}%
+        {}
+    \makeatletter
+    \ifthenelse{\equal{\ALG@noend}{t}}{\algtext*{ENDR}}{}
+    \makeatother
+    \makeatletter
+    \ifthenelse{\equal{\ALG@noend}{t}}{\algtext*{ENDRQ}}{}
+    \makeatother
+    \makeatletter
+    \ifthenelse{\equal{\ALG@noend}{t}}{\algtext*{ENDRC}}{}
+    \makeatother
+        \caption{S*-LWT(LWT in Scylla)}
+        \label{alg-s-lwt}
+        \begin{multicols}{2}
+
+        \begin{algorithmic}[1]
+        \ReceiveC[\texttt{CAS($\mathit{pc, pv}$)}]
+            \State $\mathit{ballot}\gets \mathsf{newBallot()}$
+            \State $\mathsf{max\_ballot} \gets\mathit{ballot}$
+            \State \textbf{send} $\langle\texttt{PREPARE}(ballot)\rangle$ \textbf{to all}
+        \ENDRC
+
+        \Receive[\texttt{PREPARE}$(ballot)$]
+            \If{$\mathsf{max\_ballot} < ballot$}
+                \State $\mathsf{max\_ballot} \gets ballot$
+                \State \textit{result} is data from disk\;
+                \State \textit{ver} is version of data\;
+                \State \textbf{send}
+                $\langle\texttt{PROMISE}(ballot, \mathsf{max\_ab}, \mathsf{max\_av}, \mathsf{max\_cb}, \mathsf{max\_cv}, $
+                $\mathsf{result}, \mathsf{ver})\rangle$ \textbf{to} $j$
+            \EndIf
+        \ENDR
+
+        \ReceiveQ[$\texttt{PROMISE}(ballot, ab, av, cb, cv, res, ver)$]
+            \If{$\max(\{ab_j|p_j\in Q\}$)$>$$\max(\{cb_j|p_j\in Q\}$)}
+                \State $pv \gets av_k$ where $ab_k=\max(\{ab_j|p_j\in Q\})$ \label{alg-s-lwt-line:sub}
+                \State \textbf{send} $\langle$\texttt{CANCEL}$\rangle$ \textbf{to client}
+                \State \textbf{send} $\langle$\texttt{PROPOSE}(\textit{ballot, pv})$\rangle$ \textbf{to all}
+            \Else
+                \State $res\_ver\gets \max(\{ver_j|p_j\in Q\})$\;
+                \State $rep\gets res_k$ where $ver_k = res\_ver$\;
+                \If{$\exists i\neq j, res_i\neq res_j$}
+                    \State \textbf{send} $\langle$\texttt{REPAIR}(\textit{ballot, rep, res\_ver})$\rangle$ \textbf{to all}\;
+                \EndIf
+                \If{$pc$ is meet} \label{alg-s-lwt-line:pc}
+                    \State \textbf{send} $\langle$\texttt{PROPOSE}(\textit{ballot, pv})$\rangle$ \textbf{to all}\; \label{alg-s-lwt-line:pc-meet}
+                \Else
+                    \State \textbf{send} $\langle$\texttt{CANCEL}$\rangle$ \textbf{to client}\label{alg-s-lwt-line:pc-not-meet}
+                \EndIf
+            \EndIf
+        \ENDRQ
+
+        \columnbreak
+
+        \Receive[$\texttt{PROPOSE}(ballot, pv)$]
+            \If{$\mathsf{max\_ballot} \le ballot$}
+                \State $\mathsf{max\_ballot}\gets ballot$\;
+                \State $\mathsf{max\_ab}\gets ballot$\;
+                \State $\mathsf{max\_av}\gets pv$\;
+                \State \textbf{send} $\langle$\texttt{ACCEPT}(\textit{ballot})$\rangle$ \textbf{to} $j$
+            \EndIf
+        \ENDR
+
+        \ReceiveQ[$\texttt{ACCEPT}(ballot)$]
+            \State \textbf{send} $\langle$\texttt{COMMIT}(\textit{ballot, pv})$\rangle$ \textbf{to all}
+        \ENDRQ
+
+        \Receive[$\texttt{COMMIT}(ballot, pv)$]
+            \If{$\mathsf{max\_ballot} \le ballot$}
+                \State $new\_ver \gets \mathsf{newVersion()}$\;
+                \State commit (\textit{pv, new\_ver}) into disk\;
+                \State $\mathsf{max\_ballot}\gets ballot$\;
+                \State $\mathsf{max\_cb}\gets ballot$\;
+                \State $\mathsf{max\_cv}\gets pv$\;
+                \State \textbf{send} $\langle$\texttt{ACK}(\textit{ballot})$\rangle$ \textbf{to} $j$\;
+            \EndIf
+        \ENDR
+
+        \ReceiveQ[$\texttt{ACK}(ballot)$]
+            \State \textbf{send} $\langle$\texttt{COMMIT}$\rangle$ \textbf{to client}
+        \ENDRQ
+        \end{algorithmic}
+    \end{multicols}
+\end{algorithm*}
