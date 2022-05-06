@@ -1,7 +1,10 @@
 # Alloy
-## Book
-- "Software Abtractions: Logic, Language, and Analysis"
-  
+
+## Learning
+- ["Software Abtractions: Logic, Language, and Analysis"](https://alloytools.org/)
+- [Alloy Github Repository](https://github.com/AlloyTools/org.alloytools.alloy) 
+- [Guide to Alloy](http://www.doc.ic.ac.uk/project/examples/2007/271j/suprema_on_alloy/Web/)
+
 ## Examples
 
 - ($vis,ar$) Framwork
