@@ -144,7 +144,7 @@ let interesting_model[model] {
 
 run Wcc {
   interesting_model[Wcc] and #Read>1 and #Write>1
-} for 8
+} for 4
 
 run CM {
   interesting_model[CM] and #Read>1 and #Write>1
