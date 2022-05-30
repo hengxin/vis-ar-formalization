@@ -1,1 +1,88 @@
-% cassandra-lwt.bib
+% cm-alloy.bib
+
+@inproceedings{10.1145/3062341.3062353,
+author = {Bornholt, James and Torlak, Emina},
+title = {Synthesizing Memory Models from Framework Sketches and Litmus Tests},
+year = {2017},
+isbn = {9781450349888},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3062341.3062353},
+doi = {10.1145/3062341.3062353},
+abstract = { A memory consistency model specifies which writes to shared memory a given read may see. Ambiguities or errors in these specifications can lead to bugs in both compilers and applications. Yet architectures usually define their memory models with prose and litmus tests—small concurrent programs that demonstrate allowed and forbidden outcomes. Recent work has formalized the memory models of common architectures through substantial manual effort, but as new architectures emerge, there is a growing need for tools to aid these efforts.  This paper presents MemSynth, a synthesis-aided system for reasoning about axiomatic specifications of memory models. MemSynth takes as input a set of litmus tests and a framework sketch that defines a class of memory models. The sketch comprises a set of axioms with missing expressions (or holes). Given these inputs, MemSynth synthesizes a completion of the axioms—i.e., a memory model—that gives the desired outcome on all tests. The MemSynth engine employs a novel embedding of bounded relational logic in a solver-aided programming language, which enables it to tackle complex synthesis queries intractable to existing relational solvers. This design also enables it to solve new kinds of queries, such as checking if a set of litmus tests unambiguously defines a memory model within a framework sketch.  We show that MemSynth can synthesize specifications for x86 in under two seconds, and for PowerPC in 12 seconds from 768 litmus tests. Our ambiguity check identifies missing tests from both the Intel x86 documentation and the validation suite of a previous PowerPC formalization. We also used MemSynth to reproduce, debug, and automatically repair a paper on comparing memory models in just two days. },
+booktitle = {Proceedings of the 38th ACM SIGPLAN Conference on Programming Language Design and Implementation},
+pages = {467–481},
+numpages = {15},
+keywords = {weak memory models, program synthesis},
+location = {Barcelona, Spain},
+series = {PLDI 2017}
+}
+
+@inproceedings{SpecFramework:SRDS2020,
+  author={Jiang, Xue and Wei, Hengfeng and Huang, Yu},
+  booktitle={2020 International Symposium on Reliable Distributed Systems (SRDS)},
+  title={A Generic Specification Framework for Weakly Consistent Replicated Data Types},
+  year={2020},
+  volume={},
+  number={},
+  pages={143-154},
+  doi={10.1109/SRDS51746.2020.00022}
+}
+
+@article{MemSynth:PLDI2017,
+  author = {Bornholt, James and Torlak, Emina},
+  title = {Synthesizing Memory Models from Framework Sketches and Litmus Tests},
+  year = {2017},
+  issue_date = {June 2017},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  volume = {52},
+  number = {6},
+  issn = {0362-1340},
+  url = {https://doi.org/10.1145/3140587.3062353},
+  doi = {10.1145/3140587.3062353},
+  abstract = { A memory consistency model specifies which writes to shared memory a given read may see. Ambiguities or errors in these specifications can lead to bugs in both compilers and applications. Yet architectures usually define their memory models with prose and litmus tests—small concurrent programs that demonstrate allowed and forbidden outcomes. Recent work has formalized the memory models of common architectures through substantial manual effort, but as new architectures emerge, there is a growing need for tools to aid these efforts.  This paper presents MemSynth, a synthesis-aided system for reasoning about axiomatic specifications of memory models. MemSynth takes as input a set of litmus tests and a framework sketch that defines a class of memory models. The sketch comprises a set of axioms with missing expressions (or holes). Given these inputs, MemSynth synthesizes a completion of the axioms—i.e., a memory model—that gives the desired outcome on all tests. The MemSynth engine employs a novel embedding of bounded relational logic in a solver-aided programming language, which enables it to tackle complex synthesis queries intractable to existing relational solvers. This design also enables it to solve new kinds of queries, such as checking if a set of litmus tests unambiguously defines a memory model within a framework sketch.  We show that MemSynth can synthesize specifications for x86 in under two seconds, and for PowerPC in 12 seconds from 768 litmus tests. Our ambiguity check identifies missing tests from both the Intel x86 documentation and the validation suite of a previous PowerPC formalization. We also used MemSynth to reproduce, debug, and automatically repair a paper on comparing memory models in just two days. },
+  journal = {SIGPLAN Not.},
+  month = {jun},
+  pages = {467--481},
+  numpages = {15},
+}
+
+@inproceedings{AlloyStar:ICSE2015,
+  author = {Milicevic, Aleksandar and Near, Joseph P. and Kang, Eunsuk and Jackson, Daniel},
+  title = {Alloy*: A General-Purpose Higher-Order Relational Constraint Solver},
+  year = {2015},
+  isbn = {9781479919345},
+  publisher = {IEEE Press},
+  abstract = {The last decade has seen a dramatic growth in the use of constraint solvers as a computational mechanism, not only for analysis of software, but also at runtime. Solvers are available for a variety of logics but are generally restricted to first-order formulas. Some tasks, however, most notably those involving synthesis, are inherently higher order; these are typically handled by embedding a first-order solver (such as a SAT or SMT solver) in a domain-specific algorithm.Using strategies similar to those used in such algorithms, we show how to extend a first-order solver (in this case Kodkod, a model finder for relational logic used as the engine of the Alloy Analyzer) so that it can handle quantifications over higher-order structures. The resulting solver is sufficiently general that it can be applied to a range of problems; it is higher order, so that it can be applied directly, without embedding in another algorithm; and it performs well enough to be competitive with specialized tools. Just as the identification of first-order solvers as reusable backends advanced the performance of specialized tools and simplified their architecture, factoring out higher-order solvers may bring similar benefits to a new class of tools.},
+  booktitle = {Proceedings of the 37th International Conference on Software Engineering - Volume 1},
+  pages = {609--619},
+  numpages = {11},
+  series = {ICSE '15}
+}
+
+@inproceedings{Crooks:PODC2017,
+  author = {Crooks, Natacha and Pu, Youer and Alvisi, Lorenzo and Clement, Allen},
+  title = {Seeing is Believing: A Client-Centric Specification of Database Isolation},
+  year = {2017},
+  isbn = {9781450349925},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  url = {https://doi.org/10.1145/3087801.3087802},
+  doi = {10.1145/3087801.3087802},
+  booktitle = {Proceedings of the ACM Symposium on Principles of Distributed Computing},
+  pages = {73--82},
+  numpages = {10},
+  series = {PODC '17}
+}
+
+@inproceedings{Contrasting:CAV2010,
+  author="Mador-Haim, Sela and Alur, Rajeev and Martin, Milo M. K.",
+  editor="Touili, Tayssir and Cook, Byron and Jackson, Paul",
+  title="Generating Litmus Tests for Contrasting Memory Consistency Models",
+  booktitle="Computer Aided Verification",
+  year="2010",
+  publisher="Springer Berlin Heidelberg",
+  pages="273--287",
+  isbn="978-3-642-14295-6"
+}

@@ -4,16 +4,26 @@
 \section{Introduction} \label{section:intro}
 
 Motivations:
+Distributed consistency models are quite tricky to understand.
+Even worse, in the literature, there are often several variants of a specific consistency model.
+For example, Jiang et al. presents six variants of causal consistency in~\cite{SpecFramework:SRDS2020} for non-transactional databases.
+Crooks presents a hierarchy of eight variants of snapshot isolation~\cite{Crooks:PODC2017} for transactional databases.
+It is difficult, even for experts,
 \begin{itemize}
-  \item CC variants
-  \item SI variants
+  \item to decide whether a given history satisfies some consistency model or not;
+  \item to come up with histories under some constraints (e.g., on size)
+    that satisfy or refuse some consistency model; and
+  \item to tell the differences between two consistency models
+    by presenting distinguishing histories that satisfy one consistency model but refuse the other.
 \end{itemize}
+All the three tasks are concerned about histories, which are easier for human to understand.
+
+\red{programs vs. litmus tests vs. histories vs. abstract executions}
 
 Challenges:
 \begin{itemize}
-  \item 
+  \item How to formally express consistency models?
 \end{itemize}
-
 
 \bfit{Our Contributions.}
 \begin{itemize}
