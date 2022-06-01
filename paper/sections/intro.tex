@@ -3,26 +3,27 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction} \label{section:intro}
 
-Motivations:
+\bfit{Motivations.}
 Distributed consistency models are quite tricky to understand.
 Even worse, in the literature, there are often several variants of a specific consistency model.
 For example, Jiang et al. presents six variants of causal consistency in~\cite{SpecFramework:SRDS2020} for non-transactional databases.
 Crooks presents a hierarchy of eight variants of snapshot isolation~\cite{Crooks:PODC2017} for transactional databases.
 It is difficult, even for experts,
-\begin{itemize}
-  \item to decide whether a given history satisfies some consistency model or not;
-  \item to come up with histories under some constraints (e.g., on size)
+\begin{description}
+  \item[\taskchecking:] to check whether a given history satisfies some consistency model or not;
+  \item[\taskgenerating:] to come up with histories under some constraints (e.g., on size)
     that satisfy or refuse some consistency model; and
-  \item to tell the differences between two consistency models
+  \item[\taskcomparing:] to tell the differences between two consistency models
     by presenting distinguishing histories that satisfy one consistency model but refuse the other.
-\end{itemize}
+\end{description}
 All the three tasks are concerned about histories, which are easier for human to understand.
 
 \red{programs vs. litmus tests vs. histories vs. abstract executions}
 
-Challenges:
+\bfit{Challenges.}
 \begin{itemize}
   \item How to formally express consistency models?
+  \item generating too many (redundant) histories
 \end{itemize}
 
 \bfit{Our Contributions.}

@@ -3,5 +3,19 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Related Work} \label{section:related-work}
 
-\bfit{Litmus Testing Generations.}
+\bfit{\taskchecking.}
+\memsat~\cite{MemSAT:PLDI2010}: ``Given an axiomatic specification of a memory model
+and a multi-threaded test program containing assertions,
+\memsat{} outputs a trace of the program in which both the assertions
+and the memory model axioms are satisfied, if one can be found.
+If it cannot find a trace, it outputs a minimal subset of the memory model and program constraints
+that are unsatisfiable.''
+
+\bfit{\taskgenerating.}
+
+\bfit{\taskcomparing.}
+\cite{Contrasting:CAV2010}: ``systematically comparing hardware memory models
+specified using both operational and axiomatic styles.
+When the models differs, the tool finds a minimal “litmus test”
+program that demonstrates the difference.''
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
