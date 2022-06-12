@@ -30,7 +30,7 @@ one sig OK extends Value {} // Writes return OK
 
 sig Key {}
 
-sig RWOperation {
+abstract sig RWOperation {
     key: one Key
 }
 
@@ -38,12 +38,11 @@ sig RWOperation {
 sig Read extends RWOperation {}
 sig Write extends RWOperation {
     value: one V
-    //rf: lone Read  // Reads-from relation
 }
 
 fact WellFormedHistory { 
     all s: Session | !s.events.hasDups and !s.events.isEmpty 
-    all s: Session| s in History.sessions // All sessions in one history 
+    all s: Session| s in History.sessions // All sessions belongs to one history 
     all o : RWOperation | one op.o 
     all e: E | one s: Session | e in s.events.elems
     so in session.~session // Session order is over events in the same session 
@@ -93,21 +92,21 @@ pred Ve2 { all disj e, e": E | e" in ve.e <=> e" in so.e }
 pred Ve3[vis: E->E] { all e: E | ve.e = vis.e }
 
 // Causal consistency variants
-pred Wcc { 
+pred WCC { 
     some vis: E->E | some ar: E->E | 
-        VisibilityIsAcyclic[vis] and WellFormedV[vis] and ArIsPartial[ar]
+        VisibilityIsAcyclic[vis] and WellFormedV[vis] and ArIsPartial[ar] and not ArIsTotalOrder[ar] 
         and SoInVis[vis] and CausalVisibility[vis] and VisAr[vis,ar] and Ve
         and ReadLastVisibleWrite[vis,ar] and VeIsReasonable[vis,ar]
 }
 pred CM {     
     some vis: E->E | some ar: E->E | 
-        VisibilityIsAcyclic[vis] and WellFormedV[vis] and ArIsPartial[ar]
+        VisibilityIsAcyclic[vis] and WellFormedV[vis] and ArIsPartial[ar] and not ArIsTotalOrder[ar] 
         and SoInVis[vis] and CausalVisibility[vis] and VisAr[vis,ar] and Ve2 
         and ReadLastVisibleWrite[vis,ar] and VeIsReasonable[vis,ar]
 }
 pred SCC {
     some vis: E->E | some ar: E->E | 
-        VisibilityIsAcyclic[vis] and WellFormedV[vis] and ArIsPartial[ar]
+        VisibilityIsAcyclic[vis] and WellFormedV[vis] and ArIsPartial[ar] and not ArIsTotalOrder[ar] 
          and SoInVis[vis] and CausalVisibility[vis] and VisAr[vis,ar] and Ve3[vis]
         and ReadLastVisibleWrite[vis,ar] and VeIsReasonable[vis,ar]
 }
@@ -130,30 +129,43 @@ pred SCCv {
         and ReadLastVisibleWrite[vis,ar] and VeIsReasonable[vis,ar]
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// =Constraints on the search space
+fact {
+    all k: Key | some (k.~key) :> Write and some (k.~key) :> Read
+}
+pred C[vis: E->E] {
+    some r: op.Write <: vis :> op.Read | r.univ.rval != Undef and r.univ.op.key = univ.r.op.key and r.univ.rval = univ.r.op.value
+}
+
 let interesting_model[model] {
     model
 }
 
-run Wcc {
-  interesting_model[Wcc] and #Read>1 and #Write>1 and #Session=2 
-} for 8
+run WCC{
+    WCC and #Read>5 and #Write>5 and #Key=5 and #V=5 and #Session=5 
+} for 20
 
 run CM {
-  interesting_model[CM] and #Read>1 and #Write>1 and #Session=2
-} for 8
+    CM and #Read>1 and #Write>1 and #Session=2
+} for 4
+
+run WCCNotCM {
+    WCC and not CM and #Read>1 and #Write>1 and #Key=2 and #V=2 and #Session=2 
+} for 4
 
 run SCC {
-  interesting_model[SCC] and #Read>1 and #Write>1 and #Session=2 
+    interesting_model[SCC] and #Read>1 and #Write>1 and #Session=2 
 } for 8
 
 run WCCv {
-  interesting_model[WCCv] and #Read>1 and #Write>1 and #Session=2 
-} for 8
+    interesting_model[WCCv] and #Read>1 and #Write>1 and #Session=2 
+} for 4
 
 run CMv {
-  interesting_model[CMv] and #Read>1 and #Write>1 and #Session>=2
+    interesting_model[CMv] and #Read>1 and #Write>1 and #Session>=2
 } for 4
 
 run SCCv {
-  interesting_model[SCCv] and #Read>1 and #Write>1 and #Session>=2
+    interesting_model[SCCv] and #Read>1 and #Write>1 and #Session>=2
 } for 8
