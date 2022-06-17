@@ -6,6 +6,34 @@
 %%%%%%%%%%%%%%%%%%%%
 \subsubsection{The \alloystar{} Model} \label{sss:cc-alloystar}
 
+We first define the $(vis,ar,V)$ framework using \alloy.
+At the top of the model, several type signatures (``sigs") are defined.
+According to Definition~\ref{}, an event $E$ contains
+an operation \op{} and a return value \rval.
+Additionally, the signature $E$ defines \so relation that
+originates form itself to other events on the same session,
+\session{} relation that indicates where $E$ performs on
+and \ve{} relation that depicts the events in $V(e)$ (Definition~\ref{}).
+Since we focus on read/write key-value stores in this paper,
+there are two kinds of operations, i.e., \Read{} and \Write.
+The \Read{} and \Write{} operations reads from
+and writes to a key of type \Key.
+
+Below the sig definitions are the basic constraints (``facts").
+For example, \so{} is a total order over all events on the same session.
+Any valid instance of the model specified in the $(vis,ar,V)$ framework
+is required to satisfy all of the listed facts to be considered well-formed,
+regardless of whether it is considered valid according to the model.
+Then we describe the return value consistency $\retval(\intreg)$ (Definition~\ref{})
+by the predicates ``\texttt{ReadLastVisibleWrite}" and ``\texttt{VeIsReasonable}".
+
+Based on the $(vis,ar,V)$ framework in Figure~\ref{},
+we formalize the recipes for $vis$, $ar$ and $V$ in Table~\ref{} and
+six causal consistency variants specified in the $(vis,ar,V)$ framework.
+The predicate for each causal consistency variant specifies
+the properties of $vis$, $ar$ and $V$ that must hold true for
+an execution which satisfies the model.
+
 %%%%%%%%%%%%%%%%%%%%
 \subsubsection{\taskchecking} \label{sss:cc-taskchecking}
 
