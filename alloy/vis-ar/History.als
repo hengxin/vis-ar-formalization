@@ -43,8 +43,8 @@ sig Write extends RWOperation {
 fact WellFormedHistory { 
     all s: Session | !s.events.hasDups and !s.events.isEmpty 
     all s: Session| s in History.sessions // All sessions belongs to one history 
-    all o : RWOperation | one op.o 
     all e: E | one s: Session | e in s.events.elems
+    all o : RWOperation | one op.o 
     so in session.~session // Session order is over events in the same session 
     no id[E] & so and so.so in so // Session order is partial
     all s: Session | IsTotalOverEvents[s.events.elems,so] // Session order is total over one session

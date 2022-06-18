@@ -6,6 +6,22 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{The \alloy{} and \alloystar{} Modelling Languages} \label{ss:alloy}
 
+``\alloy{}~\cite{Alloy:2012} provides a domain-specific language for defining relational models: 
+models consisting of a set of atoms (or, for our purposes, nodes in a graph), 
+and relations (edges in a graph). 
+The relational approach makes it a natural fit 
+for describing consistency models.
+\alloy{} feeds its models into the Kodkod relational model finder,
+which in turn uses off-the-shelf SAT~\cite{} solvers to 
+search for instances of the given model. 
+This flow provides a convenient front end 
+suited for asking questions about 
+memory models and/or about particular litmus tests. 
+The basic \alloy{} syntax is summarized in Table 3." 
+However, \alloy{} is based on a first-order relational logic.
+The for-all and exists-some quantifiers over relations cannot be described.
+To this end, \alloystar{}~\cite{AlloyStar:ICSE2015} is provided to
+support higher-order and bounded constraint solver based on the \alloy{} analyzer.
 %%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{The $(\vis, \ar)$ Specification Framework} \label{ss:vis-ar}
 

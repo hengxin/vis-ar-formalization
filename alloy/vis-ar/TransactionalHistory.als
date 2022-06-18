@@ -7,7 +7,24 @@ sig Transaction {
 	all e1, e2 : E | e1!=e2 => (e1->e2 in po or e2->e1 in po) // po is total	
 	no po & ~po // po is antisymmetric
 	no iden & po // po is irreflexive
-	po in E->E // po only contains events from e	
+	po in E->E // po only contains events from E	
+}
+
+sig SessionId {}
+sig Session {
+	id: SessionId,
+	transactions: some Transaction,
+	so: Transaction ->Transaction
+}{
+	all s : Session | (s.@id = id) => s = this // session ids are distinct
+	all t1, t2 : transactions | t1!=t2 => (t1->t2 in so or t2->t1 in so) // so is total	
+	no so & ~so // so is antisymmetric
+	no iden & so // so is irreflexive
+	so in transactions->transactions // so only contains events from transactions
+}
+
+one sig History {
+	sessions: some Session
 }
 
 sig Obj {}
@@ -22,7 +39,7 @@ sig Read,Write extends Op {}
 sig EventId {}
 abstract sig HEvent {
 	id: EventId,
-	op: Op,
+	op: Op
 }{
 	all h : HEvent | (h.@id = id) => h = this // event ids are distinct
 }
@@ -34,18 +51,16 @@ fun HEventObj[x : Obj] : HEvent { {e : HEvent | e.op.obj = x } }
 fun WEventObj[x : Obj] : WEvent { HEventObj[x] & WEvent }
 fun REventObj[x : Obj] : REvent { HEventObj[x] & REvent }
 
-one sig History {
-	transactions: set Transaction
-}
-
 fact WellFormedHistory {
-    all t: Transaction| t in History.transactions // All transactions belongs to one history 
+    all s: Session | s in History.sessions // All sessions belongs to one history 
+    all t: Transaction | one s: Session | t in s.transactions // One transaction belongs to one session	
 	all e : HEvent | one E.e // Any HEvent belongs to one Transaction
 	Op in HEvent.op   // All ops are associated with HEvents
 	Obj in Op.obj  // All objs are associated with ops
 }
 
 pred WellFormedVisAr[vis: Transaction->Transaction, ar: Transaction->Transaction] { 
+  	all s: Session | s.so in vis
 	vis in ar 
 	all t : Transaction | t not in t.^vis  // Acyclic vis
 	all t : Transaction | t not in t.^ar   // Acyclic ar
@@ -134,7 +149,7 @@ pred NoConflict[vis: Transaction->Transaction] {
 }
 
 pred Prefix[vis: Transaction->Transaction, ar: Transaction->Transaction] { ar.vis in vis }
-pred TotalVis[vis: Transaction->Transaction] { no (iden & vis) and no (vis & ~vis) and all disj t,s : Transaction | t->s in vis or s->t in vis}
+pred TotalVis[vis: Transaction->Transaction] { no ((iden) & vis) and no (vis & ~vis) and all disj t,s : Transaction | t->s in vis or s->t in vis}
 
 pred RA { some vis, ar: Transaction->Transaction | WellFormedVisAr[vis,ar] and INT and EXT[vis,ar] }
 pred CC { some vis, ar: Transaction->Transaction | WellFormedVisAr[vis,ar] and INT and EXT[vis,ar] and TransVis[vis] }
@@ -144,6 +159,7 @@ pred SI {  some vis, ar: Transaction->Transaction | WellFormedVisAr[vis,ar] and 
 pred SER {  some vis, ar: Transaction->Transaction | WellFormedVisAr[vis,ar] and INT and EXT[vis,ar] and TotalVis[vis] }
 
 run CC for 4
-run {RA not CC and #Transaction=3 and #E=6} for 8
+//run {RA not CC and #Transaction=3 and #E=6} for 8
+run {RA not CC and #Transaction=3 and #HEvent=6 #Obj=2} for 8
 run SER for 4
 
