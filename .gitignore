@@ -316,3 +316,6 @@ TSWLatexianTemp*
 
 # Built Visual Studio Code Extensions
 *.vsix
+
+
+paper/cm-alloy.pdf
