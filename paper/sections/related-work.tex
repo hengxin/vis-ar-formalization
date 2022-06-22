@@ -11,11 +11,65 @@ and the memory model axioms are satisfied, if one can be found.
 If it cannot find a trace, it outputs a minimal subset of the memory model and program constraints
 that are unsatisfiable.''
 
+\cppmem~\cite{CppMem:POPL2011}:``In this paper we establish a mathematically rigorous
+semantics for C++ concurrency using Isabelle/HOL.
+\cppmem{} tool takes a program in a fragment of C++0x 
+and calculates the set of its executions 
+allowed by the memory model, displaying them graphically."
+
+\herd~\cite{Herd:TOPLAS2014}:``We present our analysis tool \mole{}, 
+which explores a piece of code to 
+find the weak memory behaviours that it contains."
+
+\nemos~\cite{Nemos:IPDPS2004}:``Memory models are defined as sets of predicates, 
+and litmus tests are contained in a separate test file.
+When a memory model is chosen and a test number is selected, 
+the FD constraint solver attempts all possible orders 
+till it can find an instantiation that satisfies all constraints."
+
 \bfit{\taskgenerating.}
+~\cite{Suites:ASPLOS2017}:``This paper presents a methodology 
+for synthesizing comprehensive litmus test suites 
+directly from a memory model specification."
+
+~\cite{Contrasting:CAV2010}:``Given two specifications,
+our approach generates all possible multi-threaded programs up to a specified bound, 
+and for each such program, checks if one of the models 
+can lead to an observable behavior not possible in the other model."
 
 \bfit{\taskcomparing.}
 \cite{Contrasting:CAV2010}: ``systematically comparing hardware memory models
 specified using both operational and axiomatic styles.
 When the models differs, the tool finds a minimal “litmus test”
 program that demonstrates the difference.''
+
+\cite{Comparing:POPL2017}:``We use Alloy to generate litmus tests that 
+distinguish three proposed variants of the C11 MCM."
+
+\bfit{Litmus Tests Characteristic Study.}
+~\cite{Mistakes:ASPLOS2008}:``Almost all (96\%) of the examined concurrency bugs 
+are guaranteed to manifest 
+if certain partial order between 2 threads is enforced."
+
+~\cite{Bounds:DAC2011}:``In this paper, we show that for a class of memory models 
+that is restricted yet expressive enough
+to include all store-atomic hardware memory models, 
+litmus tests of a bounded size are sufficient for 
+illustrating differences between memory consistency models in this class.
+We establish a bound of two threads and 
+no more than six memory access instructions 
+for differentiating litmus tests
+in this class of models."
+
+\bfit{Consistency Testing.}
+\violat~\cite{Violat:CAV2019}:``\violat{} generates self-contained test programs which do
+not require enumerating linearizations dynamically per execution, instead statically
+precomputing the ADT-admitted return-value outcomes per test program."
+
+\monkeydb~\cite{MonkeyDB:OOPSLA2021}:``\monkeydb{} can be configured with one of several isolation levels.
+On a read operation, \monkeydb{} computes the set of all possible return values
+allowed under the chosen isolation level,
+and randomly returns one of them.
+The developer can then simply execute their test multiple times
+to get coverage of possible weak behaviors."
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
