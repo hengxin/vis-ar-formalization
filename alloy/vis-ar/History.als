@@ -1,8 +1,8 @@
-module AbstractExecution
+module History
 
 let id[A] = A<:iden
 
-// Abstract execution 
+// History
 sig E {
     op: one RWOperation,
     rval: Value, // Assuming that the events are complete
@@ -144,7 +144,7 @@ let interesting_model[model] {
 
 run WCC{
     WCC and #Read>5 and #Write>5 and #Key=5 and #V=5 and #Session=5 
-} for 20
+} for 4
 
 run CM {
     CM and #Read>1 and #Write>1 and #Session=2

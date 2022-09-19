@@ -6,6 +6,36 @@
 %%%%%%%%%%%%%%%%%%%%
 \subsubsection{The \alloystar{} Model} \label{sss:si-alloystar}
 
+We first define the $(vis,ar)$ framework using \alloy.
+At the top of the model, several type signatures (``sigs") are defined.
+According to Definition~\ref{}, a history is a set of transactions and
+a transaction is a sequence of several events.
+An event contains an identifier \id{} and an operation $\op$.
+Since we focus on read/write key-value stores in this paper,
+there are two kinds of operations, i.e., \Read{} and \Write.
+The \Read{} and \Write{} operations reads from
+and writes to a key of type \Key.
+Additionally, the signature $T$ defines \po{} relation that
+totally orders all the events in $T$.
+An Abstract execution are an enriched history with two relations, \vis{} and \ar{},
+which are relations over transactions.
+
+Below the sig definitions are the basic constraints (``facts").
+For example, \vis{} is a an acyclic relation 
+and \ar{} is a total order over all transactions in a given history.
+Any valid instance of the snapshot isolation variants specified in the $(vis,ar)$ framework
+is required to satisfy all of the listed facts to be considered well-formed,
+regardless of whether it is considered valid according to the variant.
+
+Since an transactional consistency model is a set of consistency axioms, 
+we first describe a set of consistency axioms 
+including \internal{}, \ext{}, \noconflict{}, \prefix{}, \transvis{} and \totalvis.
+Each consistency axiom is a predicate,
+which specifies the properties of $vis$, $ar$ that must hold true for
+an execution which satisfies the axiom.
+Based on these consistency axioms,
+we formalize the transactional consistency models in Table~\ref{}.
+
 %%%%%%%%%%%%%%%%%%%%
 \subsubsection{\taskchecking} \label{sss:si-taskchecking}
 
